@@ -1,0 +1,41 @@
+## This is test deployment for Kubernetes platforms.
+## This is not intended to be used in production.
+##
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: solr-db
+  name: solr-db
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: solr-db
+  template:
+    metadata:
+      labels:
+        app: solr-db
+    spec:
+      containers:
+      - image: solr:latest
+        name: solr
+## End of the creation of the Pod
+---
+##Start of creating the service for Solr
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: solr-db
+  name: solr-db
+spec:
+  ports:
+  - port: 8983
+    protocol: TCP
+    targetPort: 8983
+  selector:
+    app: solr-db
+  sessionAffinity: None
+  type: NodePort
+        
